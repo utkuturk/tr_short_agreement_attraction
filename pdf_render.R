@@ -7,11 +7,11 @@ setwd(
 )
 
 # Convert it to knitr
-knitr::Sweave2knitr("glossa-template.Rnw")
+knitr::Sweave2knitr("manuscript.Rnw")
 
 # knit it to a pdf
-knitr::knit2pdf(compiler = 'xelatex', 'glossa-template-knitr.Rnw')
+knitr::knit2pdf(compiler = 'xelatex', 'manuscript-knitr.Rnw')
 
 # open the PDF
-system2('open', args = 'glossa-template-knitr.pdf', wait = FALSE)
+system2('open', args = 'manuscript-knitr.pdf', wait = FALSE)
 

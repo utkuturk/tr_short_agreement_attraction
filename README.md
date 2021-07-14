@@ -1,5 +1,4 @@
 # data, code, and paper for the short turkish agreement attraction paper
-[@utkuturkling](https://twitter.com/utkuturkling) & [@pavellogacev](https://twitter.com/pavellogacev)
 
 ## Run Order and Details
 - First open [full_analysis.R](full_analysis.R) file run everything inside. 

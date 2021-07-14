@@ -16,8 +16,3 @@ dataAvSplit <- data %>%
   as.data.frame()
 
 plot_split <- dataAvSplit %>% ggplot(aes(grammatical, p_yes, group = paste(experiment,attractor_num), color = experiment )) + geom_point() + geom_line(aes(linetype =attractor_num)) + facet_wrap(~trial_group)
-
-
-#dataAvClean <- slice(dataAvSplit, 1:4)
-
-#plot_average <- dataAvClean %>% ggplot(aes(grammatical, p_yes, group = paste(experiment,attractor_num), color = experiment )) + geom_point() + geom_line(aes(linetype =attractor_num)) #+ facet_wrap(~experiment, scales = "free_y")

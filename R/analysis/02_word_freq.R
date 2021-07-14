@@ -13,8 +13,7 @@ word_freq %<>% dplyr::group_by(exp) %>%
                               freqlog_n1n2 = log(n1) - log(n2)
                             ) %>% 
                 ungroup()
-# word_freq$freq_cat_n1 %<>% as.factor()
-# word_freq$freq_cat_n2 %<>% as.factor()
+
 
 
 word_freq_exp1 <- word_freq %>% subset(exp == "exp1") %>% dplyr::select(-exp)

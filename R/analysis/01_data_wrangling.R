@@ -4,15 +4,6 @@ data_exp1 <- readRDS(fname_data)
 fname_form <- "./data/exp_form.rds"
 form_exp1 <- readRDS(file = fname_form)
 
-### note: the low accuracy on fillers is not caused by a couple of items
-###       -> see below
-# filler_avgs <- 
-# data_exp1 %>% subset(Type == "filler") %>% group_by(Item, condition) %>% 
-#               summarize(M = mean(ResponseYes, na.rm = T)) %>%
-#               arrange(condition, Item)
-# fillers %>% subset(condition == "a") 
-# fillers %>% subset(condition == "b")
-###
 
 # compute by-subject percentages of 'yes' responses, and average RTs 
 avg_by_subj <- data_exp1 %>%
@@ -37,10 +28,6 @@ df_lagoetal <- read.csv(fname_lagoetal, encoding = "UTF-8", as.is = T)
 df_lagoetal %<>% subset(Group == "monolingual")
 df_lagoetal %<>% dplyr::select(-Accuracy, -L1:-Group, -List:-SelfRateGerman)
 
-# Note: All rows with Experiment == "offline" also seem to be for 
-#       the UNP task ('Grammatical' is NA). I wonder if these were
-#       the same subjects, or if the subject labels were simply the same
-#       for the two experiments.
 with(df_lagoetal, stopifnot( is.na(Grammatical) == (Experiment == "offline") ))
 
 df_lagoetal_unp <- df_lagoetal %>% 
@@ -126,5 +113,5 @@ df_merge_lago <- df_lagoetal_attr_clean %>%
                       ungroup() %>% 
                       dplyr::select(grammatical, attractor_num,
                                     subject, item, ResponseYes, RT)
-df_merge_lago$experiment <- "Lago et al. (2018)" 
+df_merge_lago$experiment <- "Lago et al. (2019)" 
 df_merge_lago$source <- NA

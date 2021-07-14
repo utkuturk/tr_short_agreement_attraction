@@ -8,22 +8,22 @@ setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 
 ## Set parameters for the model analysis
 # parameters:
-# By default, only run a model for 'acceptable responses 
+# By default, only run a model for 'acceptable responses
 # in which the data from exp1 and lago et al is pooled
 # Change the following values to True if you would like to have
 # additional exp1 only bayesian model and coefs
 # additional lago only bayesian model and coes
-# model of the RTs 
+# model of the RTs
 
 exp1only <- F; lagoonly <- F; rt <- F
 
 
-# If else in which we check 
+# If else in which we check
 # First, the complete environment needed for the paper
 # If the file does not exist, it runs all scripts and analyses
 # saves the environment, which would already be present here.
 # If the file exist, it asks whether or not you would like to refresh it.
-# This would be done after some stuff within the analysis are changed 
+# This would be done after some stuff within the analysis are changed
 # or the parameters above are changed.
 # If said yes (y), then everything is run again.
 # If said no (n), then it loads the complete_environment.RData

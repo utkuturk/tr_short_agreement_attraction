@@ -11,12 +11,6 @@ df_merged %<>% within(., {
 })
 df_merged_nofillers <- df_merged %>% subset(is.na(source) | source != "filler")
 
-# ## test model parameterization using a simple GLM first
-# m <- glm(ResponseYes ~ (cFreqlog_n1 + cFreqlog_n2) *
-#            cEndsInConsonant * cUngrammatical * cAttractorPlural,
-#          data = df_merged_nofillers,
-#          family = binomial("probit"))
-# summary(m)
 
 models <- c()
 

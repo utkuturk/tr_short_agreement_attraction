@@ -29,3 +29,6 @@ m_effect_lago <- sprintf("%0.2f", lago_cur_entry1$M-lago_cur_entry2$M)
 estimate_cGrammatical <- print_estimate_with_ci( m_responses, 'cGrammatical' )
 estimate_cGrammatical_cAttractorPlural <- print_estimate_with_ci( m_responses, 'cGrammatical:cAttractorPlural')
 estimate_threeway_interaction <- print_estimate_with_ci( m_responses, 'cEndsInConsonant:cGrammatical:cAttractorPlural')
+
+estimate_ungramResp_cAmbiguity_cAttractorPlural <- print_estimate_with_ci(m_ungram_responses, 'cEndsInConsonant:cAttractorPlural')
+estimate_ungramResp_cAttractorPlural <- print_estimate_with_ci(m_ungram_responses, 'cAttractorPlural')
