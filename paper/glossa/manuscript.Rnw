@@ -212,7 +212,7 @@ All factors were sum-coded. We have used standard priors provided by the brms pa
 Because the magnitude of the agreement attraction effect can operationalized either as the interaction between grammaticality and the presence of a plural attractor, or as the effect of a plural attractor in ungrammatical sentences, we used a second model with predictors (ii) and (iii) and their interaction to analyze responses to ungrammatical conditions only.
 
 
-In the results section, we provide summaries of the coefficient posterior distributions. For our model, we ran \Sexpr{n_chains} chains with \Sexpr{n_warmup} warm-up iterations and \Sexpr{n_iter-n_warmup} sampling iterations. The data for our study, along with our analysis scripts can be found \url{https://anonymous.4open.science/r/replication_lagoetal2018-AC8C/}.
+In the results section, we provide summaries of the coefficient posterior distributions. For our model, we ran \Sexpr{n_chains} chains with \Sexpr{n_warmup} warm-up iterations and \Sexpr{n_iter-n_warmup} sampling iterations. The data for our study, along with our analysis scripts can be found \url{hhttps://anonymous.4open.science/r/tr_short_agreement_attraction-1365/}.
 
 
 \subsection{Results}
@@ -297,7 +297,7 @@ Thus, we successfully replicated the findings of \citet{LagoEtAl:2019} with disa
 \section*{Data Availability} %exclude
 
 
-The data that support the findings of this study, the code, and the paper resources including \LaTeX{} and \texttt{Sweave} files are openly available in the anonimized github page at \url{https://anonymous.4open.science/r/replication_lagoetal2018-AC8C/}. %exclude
+The data that support the findings of this study, the code, and the paper resources including \LaTeX{} and \texttt{Sweave} files are openly available in the anonimized github page at \url{https://anonymous.4open.science/r/tr_short_agreement_attraction-1365/}. %exclude
 
 
 \section*{Authors' Contributions} %exclude
