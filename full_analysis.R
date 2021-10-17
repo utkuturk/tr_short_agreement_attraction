@@ -4,7 +4,7 @@
 set.seed(42)
 
 ## Set the path to the active document (full_analysis_and_pdf)
-setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
+setwd(here::here())
 
 ## Set parameters for the model analysis
 # parameters:

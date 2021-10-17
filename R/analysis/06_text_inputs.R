@@ -13,11 +13,11 @@ exp1_cur_entry4 = avg_exp$resp %>% filter(experiment == "Experiment 1", grammati
 exp1_cur_entry4$M %<>% round(.,2)
 exp1_cur_entry4$SE %<>% round(.,2)
 
-lago_cur_entry1 = avg_exp$resp %>% filter(experiment == "Lago et al. (2018)", grammatical == "ungrammatical", attractor_num == "plural")
+lago_cur_entry1 = avg_exp$resp %>% filter(experiment == "Lago et al. (2019)", grammatical == "ungrammatical", attractor_num == "plural")
 lago_cur_entry1$M %<>% round(.,2)
 lago_cur_entry1$SE %<>% round(.,2)
 
-lago_cur_entry2 = avg_exp$resp %>% filter(experiment == "Lago et al. (2018)", grammatical == "ungrammatical", attractor_num == "singular")
+lago_cur_entry2 = avg_exp$resp %>% filter(experiment == "Lago et al. (2019)", grammatical == "ungrammatical", attractor_num == "singular")
 lago_cur_entry2$M %<>% round(.,2)
 lago_cur_entry2$SE %<>% round(.,2)
 

@@ -100,7 +100,7 @@ models[['ungram_responses']] <- m_ungram_responses
 
 tables <- vector('list', length(models))
 for (i in seq_along(models)) {
-  fname <- paste0('results_table_', names(models[i]))
+  fname <<- paste0('results_table_', names(models[i]))
   tables[[fname]] <- fixef(models[[i]], summary = T, robust = F) %>%
     as.data.frame() #%>% tibble::rownames_to_column("variables")
   
