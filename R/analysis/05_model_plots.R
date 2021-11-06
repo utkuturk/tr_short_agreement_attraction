@@ -7,7 +7,7 @@ contrast_names <- c("cGrammatical" = "Grammaticality",
                     "cEndsInConsonant:cGrammatical:cAttractorPlural" = "Ambiguity * Grammaticality * Plural Attractor")
 
 p_m_response <- 
-  create_model_coefs_plot( m_responses, 
+  create_model_coefs_plot( m_responses_full, 
         plot_stats = T, map_names = contrast_names,
         expand_right = 2.5, expand_top = 1.4, x_stat_adjust = 1.1,
         x_breaks = -1:4 ) + 

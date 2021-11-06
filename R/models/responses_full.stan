@@ -117,15 +117,16 @@ model {
     target += bernoulli_lpmf(Y | mu);
   }
   // priors including all constants
-  target += student_t_lpdf(Intercept | 3, 0, 2.5);
-  target += student_t_lpdf(sd_1 | 3, 0, 2.5)
-    - 4 * student_t_lccdf(0 | 3, 0, 2.5);
+  target += normal_lpdf(b | 0, 1);
+  target += normal_lpdf(Intercept | 0, 1);
+  target += normal_lpdf(sd_1 | 0, 1)
+    - 4 * normal_lccdf(0 | 0, 1);
   target += std_normal_lpdf(to_vector(z_1));
-  target += lkj_corr_cholesky_lpdf(L_1 | 1);
-  target += student_t_lpdf(sd_2 | 3, 0, 2.5)
-    - 4 * student_t_lccdf(0 | 3, 0, 2.5);
+  target += lkj_corr_cholesky_lpdf(L_1 | 2);
+  target += normal_lpdf(sd_2 | 0, 1)
+    - 4 * normal_lccdf(0 | 0, 1);
   target += std_normal_lpdf(to_vector(z_2));
-  target += lkj_corr_cholesky_lpdf(L_2 | 1);
+  target += lkj_corr_cholesky_lpdf(L_2 | 2);
 }
 generated quantities {
   // actual population-level intercept

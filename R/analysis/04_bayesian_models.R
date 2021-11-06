@@ -16,20 +16,44 @@ models <- c()
 
 n_chains <- 4
 n_cores <- 4
-n_iter <- 2000
-n_warmup <- 1000
+n_iter <- 20000
+n_warmup <- 2000
 
-fname_responses <- "./R/fits/responses"
-fname_responses_stan <- "./R/models/responses.stan"
-m_responses <- brm(ResponseYes ~ cEndsInConsonant * cGrammatical * cAttractorPlural + 
-                                 (cGrammatical * cAttractorPlural + 1| subject) + 
-                                 (cGrammatical * cAttractorPlural + 1| item),
-                   data = df_merged_nofillers,
-                   family = bernoulli("probit"), 
-                   chains = n_chains, cores = n_cores, iter = n_iter, warmup = n_warmup, init_r = .1,
-                   file = fname_responses, save_model = fname_responses_stan)
 
-models[['responses']] <- m_responses
+
+# formula_null <- ResponseYes ~ cGrammatical * cAttractorPlural +
+#                               (cGrammatical * cAttractorPlural + 1| subject) +
+#                               (cGrammatical * cAttractorPlural + 1| item)
+
+# priors_null <- c(
+#   set_prior("student_t(3,0,2.5)", class = "Intercept"),
+#   set_prior("normal(0,1)", class = "b", coef = "cAttractorPlural"),
+#   set_prior("normal(0,1)", class = "b", coef = "cGrammatical"),
+#   set_prior("normal(0,1)", class = "b", coef = "cGrammatical:cAttractorPlural"),
+#   set_prior("cauchy(0,1)", class = "sd"),
+#   set_prior("lkj(2)", class = "cor")
+# )
+
+
+
+fname_responses_full <- "./R/fits/responses_full"
+fname_responses_full_stan <- "./R/models/responses_full.stan"
+m_responses_full <- brm(ResponseYes ~ cEndsInConsonant * cGrammatical * cAttractorPlural + 
+                                      (cGrammatical * cAttractorPlural + 1| subject) + 
+                                      (cGrammatical * cAttractorPlural + 1| item),
+                    data = df_merged_nofillers,
+                    prior = c(
+                              prior(normal(0,1), class = Intercept),
+                              prior(normal(0,1), class = b),
+                              prior(normal(0,1), class = sd),
+                              prior(lkj(2), class = cor)
+                              ),
+                    family = bernoulli("probit"), 
+                    chains = n_chains, cores = n_cores, iter = n_iter, warmup = n_warmup, init_r = .1,
+                    file = fname_responses_full, save_model = fname_responses_full_stan,
+                    save_all_pars = TRUE)
+
+
 
 {
   if (exp1only == T) {
@@ -105,3 +129,4 @@ for (i in seq_along(models)) {
     as.data.frame() #%>% tibble::rownames_to_column("variables")
   
 }
+
