@@ -259,7 +259,7 @@ create_model_coefs_plot <- function(m,
                            label = sprintf("[%s]", tbl$PBelowZeroStr)), 
                        family = "mono", hjust = "left")
     suppressWarnings({
-      label <- parse(text = "underline(paste('P(', theta, ' < 0)'))")
+      label <- parse(text = "underline(paste('P(', beta, ' < 0)'))")
       p <-  p + geom_text(x = tbl$xmax[1], y = length(unique(tbl$coef))+1, 
                           label = label,
                           family = "mono", hjust = "left")#, fontface = "underlined")

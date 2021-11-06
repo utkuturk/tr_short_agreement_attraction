@@ -39,8 +39,9 @@
 \newif\if@brill\@brillfalse
 \newif\if@charis\@charisfalse
 \newif\if@final\@finalfalse
-\newif\if@biblatex\@biblatexfalse
+%\newif\if@biblatex\@biblatexfalse
 \newif\if@linguex\@linguexfalse
+\newif\if@apacite\@apacitefalse
 
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{article}}
 
@@ -57,7 +58,8 @@
 \DeclareOption{brill}{\@lucidafalse \@timesfalse \@cmtrue \@brilltrue \@charisfalse}
 \DeclareOption{charis}{\@lucidafalse \@timesfalse \@cmtrue \@brillfalse \@charistrue}
 \DeclareOption{final}{\@finaltrue}
-\DeclareOption{biblatex}{\@biblatextrue}
+%\DeclareOption{biblatex}{\@biblatextrue}
+\DeclareOption{apacite}{\@apacitetrue}
 \DeclareOption{linguex}{\@linguextrue}
 
 \ExecuteOptions{times} % times is the default.
@@ -159,12 +161,9 @@
 \RequirePackage{ifthen}
 \RequirePackage[hyphens]{url}
 
-\if@biblatex
-	\RequirePackage[backend=biber,
-			bibstyle=biblatex-gl,
-			citestyle=gl-authoryear-comp,
-			maxcitenames=3,
-			maxbibnames=99]{biblatex}
+
+\if@apacite
+	\RequirePackage[natbibapa]{apacite}
 \else
 	\RequirePackage{natbib}
 	\bibpunct[: ]{(}{)}{; }{a}{}{;~}
