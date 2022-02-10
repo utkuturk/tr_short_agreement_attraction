@@ -73,11 +73,11 @@ avg_by_subj_lagoetal_wide <- avg_by_subj_lagoetal %>%
 
 n_subject <- data_exp1$subject %>% unique() %>% length()   
 # identify bad participants 
-accuracy_threshold <- 0.25
+accuracy_threshold <- 0.10
 bad_subjects <- subset(avg_by_subj_wide, delta_dc <= accuracy_threshold ) %>% .$subject
 data_exp1_clean <- data_exp1 %>% subset(!subject %in% bad_subjects)
 
-rt_threshold <- 200
+rt_threshold <- 0
 data_exp1_clean %<>% filter( RT > rt_threshold)
 
 perc_deletion_exp1 <- round(100*((nrow(data_exp1)-nrow(data_exp1_clean))  / nrow(data_exp1)),2)

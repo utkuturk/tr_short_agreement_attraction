@@ -276,7 +276,7 @@ create_model_coefs_plot <- function(m,
     p <- p + facet_wrap(~model)
   }
   
-  p <- p + theme_bw(base_family = "Fira Sans") + 
+  p <- p + theme_bw(base_family = "Times") + 
     theme(panel.border = element_blank(), 
           axis.ticks.y = element_blank(),
           #strip.text.x = element_blank(),

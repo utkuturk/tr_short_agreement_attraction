@@ -5,7 +5,8 @@
 # Session Data files
 data/complete_environment.RData
 .RData
-
+R/fits/responses_priors.rds
+R/fits/ungram_responses_priors.rds
 # User-specific files
 .Ruserdata
 

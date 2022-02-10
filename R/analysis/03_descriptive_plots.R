@@ -39,7 +39,7 @@ p_avg_resp <- avg_exp$resp %>%
                          color = attractor_num, group = attractor_num)) + 
                 geom_point(position = pd) + geom_line(position = pd) + 
                 facet_wrap(~experiment) + 
-  theme_bw(base_family = 'Fira Sans')+
+  theme_bw(base_family = 'Times')+
   theme(strip.background =element_rect(fill="white"))+
   theme(strip.text = element_text(colour = 'black'))
 
@@ -52,3 +52,4 @@ p_avg_resp <- p_avg_resp + xlab("") + ylab("Percentage 'acceptable'")
 
 avg_exp_resp_exp1 <- avg_exp$resp %>% subset(experiment == "Experiment 1")
 avg_exp_resp_lagoetal <- avg_exp$resp %>% subset(experiment == "Lago et al. (2019)")
+

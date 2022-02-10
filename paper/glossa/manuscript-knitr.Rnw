@@ -5,32 +5,68 @@
 \usepackage{xyling} 
 \usepackage[linguistics]{forest}
 
+<<wordcount, echo=FALSE, cache=FALSE>>=
+library(knitr)
+
+comma <- function (x, ...) {
+  format(x, ..., big.mark = ",", scientific = FALSE, trim = TRUE)
+}
+
+# To dynamically extract name of the current file, use code below
+nameoffile <- 'manuscript-knitr.Rnw' # get name of file
+nof2 <-  strsplit(nameoffile,"\\.")[[1]][1] # extract name, drop extension
+noftex <- paste(nof2, ".tex", sep="") # add .tex extension
+nofwordcount <-  paste(nof2, '-','wordcount', '.tex', sep = "") # prepare a tex file for word count
+if (file.exists(nofwordcount)) {unlink(nofwordcount)} #delete the previous file.
+
+con <- file(noftex, open = 'r') # open the file with R
+while(TRUE) {
+  line <- readLines(con, n = 1) # read lines
+  if(length(line) == 0) break # pass if nothing is there
+  else if(!endsWith(line, "%exclude")){ # if the line does not end with %exclude 
+    write(line, file = nofwordcount, append = TRUE) # write it to the new file
+  } 
+}
+close(con)
+
+systemcall <- paste("system('texcount -inc -incbib -total -sum ", nofwordcount, "', intern=TRUE)", sep="") # paste together texcount system command
+texcount.out <- eval(parse(text=systemcall)) # run texcount on current last compiled .tex file with edits
+
+sum.row <- grep("Sum count", texcount.out, value=TRUE) # extract row
+pattern <- "(\\d)+" # regex pattern for digits
+
+count <- regmatches(sum.row, regexpr(pattern, sum.row) )
+# extract digits
+
+count <- comma(as.numeric(count)) # add comma
+
+@
 
 % \pdf* commands provide metadata for the PDF output. ASCII characters only!
-\pdfauthor{Utku Turk and Pavel Logacev}
+\pdfauthor{A.A and B.B}
 \pdftitle{Agreement Attraction in Turkish}
 \pdfkeywords{agreement attraction, syncretism, Turkish, bayesian, replication}
 
-\title[Agreement Attraction in Turkish]{Agreement Attraction in Turkish: The Case of Genitive Attractors\\ \bigskip \large Word count: 3303}
+\title[Agreement Attraction in Turkish]{Agreement Attraction in Turkish: The Case of Genitive Attractors\\ \bigskip \large Word count: \Sexpr{count}}
 
-\newcommand{\firstauthor}{{Utku T\"urk}}
-\newcommand{\firstauthorshort}{{T\"urk}}
-\newcommand{\secondauthor}{{Pavel Loga\v{c}ev}}
-\newcommand{\secondauthorshort}{{Loga\v{c}ev}}
+\newcommand{\firstauthor}{{A.A.}}
+\newcommand{\firstauthorshort}{{A.A.}}
+\newcommand{\secondauthor}{{B.B.}}
+\newcommand{\secondauthorshort}{{B.B.}}
 
 
-\author[\firstauthorshort \& \secondauthorshort]% short form of the author names for the running header. If no short author is given, no authors print in the headers.
+\author[\firstauthor \& \secondauthor]% short form of the author names for the running header. If no short author is given, no authors print in the headers.
 {%as many authors as you like, each separated by \AND.
-  \spauthor{\firstauthor\\ 
-  \institute{Bo\u{g}azi\c{c}i University}\\
+  \spauthor{\texttt{Hidden Hidden (\firstauthor)}\\ 
+  \institute{\texttt{Hidden University}}\\
   \small{
-    \texttt{utku.turk@boun.edu.tr}}
+    \texttt{hidden@hidden.edu}}
   }
   \AND
-  \spauthor{\secondauthor\\ 
-  \institute{Bo\u{g}azi\c{c}i University}\\
+  \spauthor{\texttt{Hidden Hidden (\secondauthor)}\\ 
+  \institute{\texttt{Hidden University}}\\
   \small{
-    \texttt{pavel.logacev@boun.edu.tr}}
+    \texttt{hidden@hidden.edu}}
   }%
 }
 
@@ -56,7 +92,8 @@ concordance=TRUE
 
 \begin{abstract}
 
-Previous studies have shown that speakers may find sentences violating subject-verb agreement grammatical when the sentence contains a feature-matching noun phrase. This so-called agreement attraction effect has also been found in genitive possessive structures such as \textit{'the teacher's brother'} in Turkish (Lago et al., 2019), which is in contrast with its absence in similar constructions in English (Nicol et al., 2016). This discrepancy has been hypothesized to be a result of the association between genitive case marking and subjecthood in Turkish, but not in English. In the present research, we test an alternative explanation in which Turkish number agreement attraction effects are due to a potential confound in Lago et al.'s experiment, as a result of which subject head nouns were locally ambiguous between the possessive and the accusative case. We hypothesized that this ambiguity may have inhibited the availability of the head noun as an agreement controller as the accusative is a non-subject case in Turkish. To test this hypothesis, we conducted a speeded acceptability judgment experiment and our results suggest that case-ambiguity does not play a role in agreement attraction, and thus lends credibility to the claim that genitive noun phrases may function as attractors in Turkish due to the association between genitive case and subjecthood. %exclude
+
+Previous studies have shown that speakers may find sentences violating subject-verb agreement grammatical when the sentence contains a feature-matching noun phrase. This so-called agreement attraction effect has also been found in genitive possessive structures such as \textit{'the teacher's brother'} in Turkish (Lago et al., 2019), which is in contrast with its absence in similar constructions in English (Nicol et al., 2016). This discrepancy has been hypothesized to be a result of the association between genitive case marking and subjecthood in Turkish, but not in English. In the present research, we test an alternative explanation in which Turkish agreement attraction effects are due to a potential confound in Lago et al.'s experiment, as a result of which subject head nouns were locally ambiguous between the possessive and the accusative case. We hypothesized that this ambiguity may have inhibited the availability of the head noun as an agreement controller as the accusative is a non-subject case in Turkish. To test this hypothesis, we conducted a speeded acceptability judgment experiment and our results suggest that case-ambiguity does not play a role in agreement attraction, and thus lends credibility to the claim that genitive noun phrases may function as attractors in Turkish due to the association between genitive case and subjecthood. %exclude
 
 
 \end{abstract}
@@ -69,29 +106,27 @@ agreement attraction; syncretism; Turkish; bayesian; replication
 
 
 
-
 \section{Introduction}
 
-Speakers often fail to accurately process grammatical dependencies between different parts of a sentence \citep[e.g.,][]{GibsonThomas:1999,PhillipsEtAl:2011}. For example, in \ref{ex:pearlmutter}, the auxiliary verb \textit{were} erroneously agrees with the agreement-wise irrelevant attractor noun phrase headed by \textit{cabinets} instead of the agreement controller headed by \textit{key}. A number of previous studies in comprehension \citep{NicolEtAl:1997, PearlmutterGarnseyBock:1999, WagersEtAl:2009} showed that participants found sentences like \ref{ex:pearlmutter} acceptable more often and read them faster compared to their counterparts with a singular attractor. This phenomenon, known as \textit{agreement attraction} \citep{BockMiller:1991} has been attested in a number of languages, such as in Arabic \citep{TuckerEtAl:2015}, Armenian \citep{AvetisyanEtAl:2020}, German \citep{LagoFelser:2018}, Hindi \citep{BhatiaDillon:2020}, Serbian \citep{RisticEtAl:2016}, Slovak \citep{BadeckerKuminiak:2007}, Spanish \citep{LagoEtAl:2015}, and recently in Turkish \citep{LagoEtAl:2019}.
+People often fail to accurately process grammatical dependencies between different parts of a sentence \citep[e.g.,][]{GibsonThomas:1999,PhillipsEtAl:2011}. For example, in \ref{ex:pearlmutter}, the auxiliary verb \textit{were} erroneously agrees with the syntactically unrelated attractor noun phrase headed by \textit{cabinets} instead of the agreement controller headed \textit{key}. A number of previous  studies in comprehension \citep{NicolEtAl:1997, PearlmutterGarnseyBock:1999} showed that participants found sentences like \ref{ex:pearlmutter} acceptable more often and read them faster compared to their counterparts with a singular attractor. This phenomenon, known as \textit{agreement attraction} \citep{BockMiller:1991} has been attested in a number of languages, such as in Arabic \citep{TuckerEtAl:2015}, Armenian \citep{AvetisyanEtAl:2020}, German \citep{LagoFelser:2018}, Hindi \citep{BhatiaDillon:2020}, Serbian \citep{RisticEtAl:2016}, Slovak \citep{BadeckerKuminiak:2007}, Spanish \citep{LagoEtAl:2015}, and recently in Turkish \citep{LagoEtAl:2019}.
 
 
 \ex. \label{ex:pearlmutter} * The \underline{key} to the cabinets \underline{were} rusty from many years of disuse. 
 
 
-\citet{LagoEtAl:2019} demonstrated that genitive possessors (such as \textit{painters} in \textit{the painters' rival}) effect agreement attraction effects in Turkish. However, this finding appears to be at odds with \citeauthor{NicolEtAl:2016}'s (\citeyear{NicolEtAl:2016}) results, who failed to find a similar effect in English. \citet{LagoEtAl:2019} hypothesize that Turkish possessor noun phrases, unlike their English counterparts, may function as agreement attractors because Turkish genitive NPs may function as subjects of non-finite clauses in Turkish \citep{GokselKerslake:2005,Kornfilt:2011}. As a result, Turkish genitive NPs may match the subjecthood feature used in the cue-based retrieval of a verb's subject \citep{LewisVasishth:2005, WagersEtAl:2009, ArnettWagers:2017}.
+\citet{LagoEtAl:2019} demonstrated that genitive possessors (such as \textit{painters} in \textit{the painters' rival}) cause agreement attraction effects in Turkish. However, this finding appears to be at odds with \citeauthor{NicolEtAl:2016}'s (\citeyear{NicolEtAl:2016}) results, who failed to find a similar effect in English. \citet{LagoEtAl:2019} hypothesize that Turkish possessor noun phrases, unlike their English counterparts, may function as agreement attractors because Turkish genitive NPs may function as subjects of non-finite clauses in Turkish \citep{GokselKerslake:2005,Kornfilt:2011}. As a result, Turkish genitive NPs may match the subjecthood feature used in the cue-based retrieval of a verb's subject \citep{LewisVasishth:2005, ArnettWagers:2017}.
 
-In this paper, we test an alternative explanation of \citeauthor{LagoEtAl:2019}'s (\citeyear{LagoEtAl:2019}) findings which is related to an instance of local ambiguity in the experimental sentences in their experiment, as a result of which all subject head nouns were ambiguous between possessive and accusative case.
+In this paper, we test an alternative explanation of \citeauthor{LagoEtAl:2019}'s (\citeyear{LagoEtAl:2019}) findings which is related to an instance of case syncretism in the experimental sentences in their experiment, as a result of which all subject head nouns were ambiguous between possessive and accusative case.
 
 
 \section{Agreement Attraction in Turkish}
 
-Turkish is an SOV word order language with overt case marking \citep{GokselKerslake:2005,Kornfilt:2011,Kornfilt:2013}. 
-For example, the possessor in the Turkish construction in \ref{ex:possgenex}, which is similar to the Saxon Genitive, is marked with genitive case, while the head noun is marked with possessive case. 
+Turkish is an SOV word order language with overt case marking \citep{GokselKerslake:2005,Kornfilt:2011,Kornfilt:2013}. For example, the possessor in the Turkish equivalent of the Saxon Genitive in \ref{ex:possgenex} is marked with genitive case, while the head noun is marked with possessive marker. 
 Importantly, the possessive case marker coincides in form with the accusative case marker when the noun stem ends in a consonant: 
 This is because in Turkish, case markers have different forms depending on whether the last sound of the stem is a vowel. In order to break up vowel-vowel clusters, Turkish uses epenthetic consonants such as \textit{s}, \textit{y}, or \textit{n}.  For example, the genitive case can surface as \textit{-nin} or as \textit{-in}, depending on the last consonant of the stem. The forms of the possessive marker and the accusative case are identical except for the epenthetic consonant. This means that they surface as \textit{-i} in consonant-ending words, but as \textit{-si} and \textit{-yi} respectively in vowel-ending words. 
 
 \ex. \label{ex:possgenex}
-\gll $[$$[$teknisyen-in$]$ e\u{g}itmen-i$]$ \\
+\gll teknisyen-in e\u{g}itmen-i \\
     technician-\textsc{gen} instructor-\textsc{poss} \\
 \glt `the instructor of the technician'
 
@@ -105,72 +140,30 @@ technician-\{\textsc{pl}/\textsc{sg}\}-\textsc{gen} instructor-\textsc{poss} ext
 \glt `The technician's/technicians' instructor extraordinarily fast ran\{\textsc{pl}/\textsc{sg}\}.'
 
 
-\citet{LagoEtAl:2019} hypothesized that these effects originated from how case and number information is encoded and retrieved: According to \citeauthor{LewisVasishth:2005}'s (\citeyear{LewisVasishth:2005}) cue-based retrieval model, phrases are encoded in a content-addressable memory as bundles of features called \textit{chunks} which include information like number, gender, case, and syntactic function \citep[e.g.,][]{SmithVasishth:2020}. Under \citeauthor{LagoEtAl:2019}'s (\citeyear{LagoEtAl:2019}) proposal, participants predict the number of the verb based on the noun phrases they process while reading the subject. In grammatical sentences with singular verb agreement, the number prediction and the verb number match, which causes no processing difficulty. In contrast, when participants fail to find the predicted number morphology on the verb, a memory-retrieval process is initiated. This process activates the search for a chunk matching two cues: the subjecthood feature ([+SUBJECT]) and the plural feature ([+PL]). While neither of the available noun phrases matches this specification in ungrammatical agreement attraction sentences, each of the NPs headed by \textit{technician} and \textit{instructor} matches one of these cues. While this partial match mostly results in participants finding the sentence ungrammatical, they may retrieve the attractor \textit{technicians} on some trials. \citet{LagoEtAl:2019} argue that this erroneous retrieval may be facilitated by the genitive case marking on the attractor, because genitive NPs can function as subjects of embedded clauses in Turkish. Due to the ubiquity of genitive subjects, attractors marked with genitive case are a priori likely to be agreement controllers.
+\citet{LagoEtAl:2019} hypothesized that these effects originated from how case and number information is encoded and retrieved: According to \citeauthor{LewisVasishth:2005}'s (\citeyear{LewisVasishth:2005}) cue-based retrieval model, phrases are encoded in a content-addressable memory as bundles of features called \textit{chunks} which include information like number, gender, case, and syntactic function \citep[e.g.,][]{SmithVasishth:2020}. Under \citeauthor{LagoEtAl:2019}'s (\citeyear{LagoEtAl:2019}) proposal, participants predict the number of the verb based on the noun phrases they process while reading the subject. In grammatical sentences with singular verb agreement, the number prediction and the verb number match, which causes no processing difficulty. In contrast, when participants fail to find the predicted number morphology on the verb, a memory-retrieval process is initiated. This process activates the search for a chunk matching two cues: the subjecthood feature ([+SUBJECT]) and the plural feature ([+PL]). While neither of the available noun phrases matches this specification in ungrammatical agreement attraction sentences, each of the NPs headed by \textit{technician} and \textit{instructor} matches one of these cues. While this partial match mostly results in participants finding the sentence ungrammatical, they may retrieve the attractor \textit{technicians} on some trials. \citet{LagoEtAl:2019} argue that this erroneous retrieval may be facilitated by the genitive case marking on the attractor, because genitive NPs can function as subjects of embedded clauses in Turkish. Due to the ubiquity of genitive subjects, attractors marked with genitive case a priori likely to be agreement controllers.
 
-However, a potential problem with the stimuli in the \citet{LagoEtAl:2019} study is that the stems of all head nouns such as \textit{e\u{g}itmen-i} (\textit{`instructor'}) in \ref{ex:lago} were consonant-ending, making their possessive forms ambiguous between possessive and accusative case due to case syncretism between them in vowel-ending stems \citep[pp. 66--67]{GokselKerslake:2005}.
-%because the surface form of both, the possessive and accusative case is \textit{-i}. 
-%locally
-As a result, the head noun (\textit{'instructor'}) in \ref{ex:ambiguous} can be disambiguated towards possessive case as in \ref{ex:ambiguous_possessive}, or towards accusative case as in \ref{ex:ambiguous_accusative}, where the genitive-marked noun functions as an embedded subject, and the matrix subject is omitted due to pro-drop.
-
-\ex.
-\label{ex:ambiguous}
-  \a. \textsc{Possessive Interpretation} \label{ex:ambiguous_possessive} \\
-  \gll Teknisyen-in e\u{g}itmen-i ko\c{s}-tu.\\
-       technician-\textsc{gen} instructor-\textsc{poss} run-\textsc{pst}\\
-  \glt `The technician's instructor ran.'
-  \b. \textsc{Accusative Interpretation} \label{ex:ambiguous_accusative}\\
-  \gll Teknisyen-in e\u{g}itmen-i kov-du\u{g}-un-u g\"{o}r-d\"{u}-m.\\
-  technician-\textsc{gen} instructor-\textsc{poss} fire-\textsc{nmlz}-\textsc{poss}-\textsc{acc} see-\textsc{pst}-\textsc{1sg}\\
-  \glt `I saw the technician firing the fast.'
-
-
-%{\color{red}
-%\ex. %Ambiguous Part 
-%\label{ex:ambiguous}\\
-%\gll Teknisyen-in e\u{g}itmen-i ola\u{g}an{\"u}st{\"u} h{\i}zl{\i} \ldots \\
-%technician-\textsc{gen} instructor-\textsc{poss} extraordinarily fast \ldots \\
-%  \a. Simplex Sentence \label{ex:simplexreading} \\
-%  \gll \ldots{} ko\c{s}-tu.\\
-%  \ldots{} run-\textsc{pst}\\
-%  \glt `The technician's instructor extraordinarily fast ran.'
-%  \b. Embedded Sentence \label{ex:embeddedreading}\\
-%  \gll \ldots{} kov-du\u{g}-un-u g\"{o}r-d\"{u}-m.\\
-%  \ldots{} fire-\textsc{nmlz}-\textsc{poss}-\textsc{acc} see-\textsc{pst}-\textsc{1sg}\\
-%  \glt `I saw the technician firing the instructor really fast.'
-%}
-
-
-Because accusative NPs cannot function as subjects in Turkish, it is possible that Lago et al.'s finding of agreement attraction effects in sentences like \ref{ex:lago} are not due to the genitive attractors' association with subjecthood, but rather due to the head nouns' \textit{reduced association with subjecthood} due to its ambiguity.
-%This ambiguity stems from the fact that the genitive case can serve as an embedded subject marker, and the accusative case can surface as \textit{-i}. 
-% For example, on some trials, 
-Because sentences like \ref{ex:lago} are locally ambiguous, participants may initially adopt an incorrect analysis of the genitive-possessive structure on some trials, and encode the genitive-marked first noun as the subject of an embedded verb and the ambiguous second noun as an accusative object. 
-Under the assumption that remnants of an incorrect analysis affect the parsing process even after after a successful reanalysis \citep{Staub:2007}, the initial association between the genitive noun phrase and subjecthood may lead an agreement attraction effect. 
-In contrast, this account predicts that the agreement attraction effect should be either significantly reduced or entirely absent when the head noun is unambiguous, as the function of the genitive noun phrase is disambiguated early, thus preventing potential digging-in effects \citep{Tabor:2004}.  
+However, a potential problem with the stimuli in the \citet{LagoEtAl:2019} study is that the stems of all head nouns such as \textit{e\u{g}itmen-i} (\textit{`instructor'}) in \ref{ex:lago} were consonant-ending, which made them locally ambiguous between possessive and accusative case \citep[pp. 66--67]{GokselKerslake:2005} because the surface form of both, the possessive and accusative case is \textit{-i}. 
 %
-%the head noun will arguably not be treated as a subject until a possible reanalysis after reading the matrix verb. We expect this reduced association to be reflected as an overall decrease in accuracy in grammatical conditions. Upon reading the verb, participants will either find the sentence ungrammatical since they have expected a structure similar to \ref{ex:embeddedreading} or reanalyze the sentence and will judge the sentence according to the structure in \ref{ex:simplexreading}. Since there is no plural marker at the matrix verb, the plural on the attractor will not have an additional effect. However, in ungrammatical conditions in which the matrix verb has an overt plural marker, we expect to have an easier interference of a plural marked Genitive NP which was recently encoded as a subject and an overall decrease in the accuracy. 
-%
-We tested this hypothesis in a speeded-acceptability experiment with sentences similar to \citeauthor{LagoEtAl:2019}'s (\citeyear{LagoEtAl:2019}), but with unambiguously marked vowel-ending head nouns. 
-%We expect that the agreement attraction effect may arise specifically on trials where participants misparse the two initial NP cases and where the sentence contains a plural attractor with a plural verb. On trials where participants misparse the two initial NP cases, but the sentence does not have a plural attractor or a plural verb, we expect overall higher errors without the specific effect of a plural attractor.
-%}
+Because accusative NPs cannot function as subjects in Turkish, it is possible that the agreement attraction effects found in sentences like \ref{ex:lago} are not due to the genitive attractors' association with subjecthood, but rather due to the \textit{head nouns' reduced association with subjecthood} due case syncretism between possessive and accusative. We tested this hypothesis in a speeded-acceptability experiment with sentences similar to \citeauthor{LagoEtAl:2019}'s (\citeyear{LagoEtAl:2019}), but with unambiguously marked vowel-ending head nouns.
 
 \section{The Present Study}
 
 The present study tested the predictions of the case syncretism account as an alternative explanation of the previously found agreement attraction effect in Turkish. To avoid the ambiguity present in \citet{LagoEtAl:2019}, we used vowel-ending head nouns nouns such as \textit{terzi} (\textit{`tailor'}), for which the possessive marker surfaces as \textit{-si} and is distinct from the accusative (\textit{-yi}). We hypothesized that if the morpho-phonological ambiguity was a key factor in agreement attraction in Turkish, unambiguous sentences like ours in \ref{ex:our_items} should not elicit attraction effects.
 
 \ex. \label{ex:our_items}
-  \a. * \textsc{Plural Attractor, Ungrammatical (Plural Verb)} \label{ex:expitem-plpl}\\
+  \a. * Plural Attractor, Ungrammatical (Plural Verb) \label{ex:expitem-plpl}\\
   \gll [Milyoner-ler-in \textbf{terzi-si}] tamamen gereksizce \textbf{kov-ul-du-lar}.\\
   millionaire-\textsc{pl}-\textsc{gen} tailor-\textsc{poss} completely without.reason fire-\textsc{pass}-\textsc{pst}-\textsc{pl}\\
   \glt `The millionaires' tailor were fired for no reason at all.'
-  \b. \textsc{Plural Attractor, Grammatical (Singular Verb)} \label{ex:expitem-plsg} \\
+  \b. Plural Attractor, Grammatical (Singular Verb) \label{ex:expitem-plsg} \\
   \gll [Milyoner-ler-in \textbf{terzi-si}] tamamen gereksizce \textbf{kov-ul-du}.\\
   millionaire-\textsc{pl}-\textsc{gen} tailor-\textsc{poss} completely without.reason fire-\textsc{pass}-\textsc{pst}\\
   \glt `The millionaires' tailor was fired for no reason at all.'
-  \b. * \textsc{Singular Attractor, Ungrammatical (Plural Verb)} \label{ex:expitem-sgpl}\\
+  \b. * Singular Attractor, Ungrammatical (Plural Verb) \label{ex:expitem-sgpl}\\
   \gll [Milyoner-in \textbf{terzi-si}] tamamen gereksizce \textbf{kov-ul-du-lar}.\\
   millionaire-\textsc{gen} tailor-\textsc{poss} completely without.reason fire-\textsc{pass}-\textsc{pst}-\textsc{pl}\\
   \glt `The millionaire's tailor were fired for no reason at all.'
-  \b. \textsc{Singular Attractor Grammatical (Singular Verb)} \label{ex:expitem-sgsg}\\
+  \b. Singular Attractor Grammatical (Singular Verb) \label{ex:expitem-sgsg}\\
   \gll [Milyoner-in \textbf{terzi-si}] tamamen gereksizce \textbf{kov-ul-du}.\\
   millionaire-\textsc{gen} tailor-\textsc{poss} completely without.reason fire-\textsc{pass}-\textsc{pst}\\
   \glt `The millionaire's tailor was fired for no reason at all.'
@@ -178,7 +171,8 @@ The present study tested the predictions of the case syncretism account as an al
 
 \subsection{Participants} 
 
-We recruited \Sexpr{n_subject} undergraduate students to participate in the experiment in exchange for course credit. All participants were native Turkish speakers, with an average age of \Sexpr{mean_age} (range: \Sexpr{min_age} -- \Sexpr{max_age}). The experiment was carried out following the principles of the Declaration of Helsinki and the regulations concerning research ethics at Bo\u{g}azi\c{c}i University. All participants provided informed consent before their participation and their identity are completely anonimized.
+
+We recruited \Sexpr{n_subject} undergraduate students to participate in the experiment in exchange for course credit. All participants were native Turkish speakers, with an average age of \Sexpr{mean_age} (range: \Sexpr{min_age} -- \Sexpr{max_age}). The experiment was carried out following the principles of the Declaration of Helsinki and the regulations concerning research ethics at \texttt{Hidden University}. All participants provided informed consent before their participation and their identity are completely anonimized.
 
 \subsection{Materials}
 
@@ -193,11 +187,11 @@ We hypothesized that the experimental sentences in \ref{ex:our_items} might elic
 
 
 \ex. \label{ex:fillers}
-  \a. \textsc{Grammatical Filler (Plural Verb)} \label{ex:gram_filler}\\
+  \a. Grammatical Filler (Plural Verb) \label{ex:gram_filler}\\
   \gll [Sosyolog-un \textbf{\"{o}\u{g}renci-si}] konu\c{s}-unca tutars{\i}zl{\i}k a\c{c}{\i}\u{g}-a \textbf{\c{c}{\i}kar-d{\i}-lar}.\\ 
   sociolog-\textsc{gen}  student-\textsc{poss} speak-\textsc{when} inconsistency  open-\textsc{dat} deduct-\textsc{pst}-\textsc{pl}\\
   \glt `When the student of the sociologist spoke, they revealed an inconsistency.'
-  \b. * \textsc{Ungrammatical Filler (Singular Verb)} \label{ex:ung_filler}\\
+  \b. * Ungrammatical Filler (Singular Verb) \label{ex:ung_filler}\\
   \gll [Dans\"{o}z-\"{u}n \textbf{koca-s{\i}}] var-{\i}nca kap{\i} sakince \textbf{a\c{c}-t{\i}}. \\
   dancer-\textsc{gen}  husband-\textsc{poss} arrive-\textsc{when} door slowly  open-\textsc{pst}\\
   \glt Intended:`When the husband of the dancer came, the door opened slowly.'
@@ -213,7 +207,7 @@ Participants saw 40 experimental and 40 filler sentences. Experimental sentences
 
 \subsection{Analysis}
 
-In order to test whether the morphological ambiguity present in the \citet{LagoEtAl:2019} sentences affected the presence or magnitude of the agreement attraction effect, we analyzed the data from the present experiment compared our results to \citeauthor{LagoEtAl:2019}'s (\citeyear{LagoEtAl:2019}) results, by including \citeauthor{LagoEtAl:2019}'s (\citeyear{LagoEtAl:2019}) data in our Bayesian GLM and using the experiment as an additional factor in the analysis.
+In order to test whether the morphological ambiguity present in the \citet{LagoEtAl:2019} sentences affected the presence or magnitude of the agreement attraction effect we analyzed the data from the present experiment together with \citeauthor{LagoEtAl:2019}'s (\citeyear{LagoEtAl:2019}) data, using the experiment as an additional factor in the analysis.
   
 Prior to the analysis, we removed the data for all participants who failed to show sufficient sensitivity to the effect of grammaticality in singular attractor conditions, i.e., when no agreement attraction was expected. Specifically, we removed all participants for whom the difference in the percentage of \textit{yes} responses between the grammatical condition \ref{ex:expitem-sgsg} and the ungrammatical condition \ref{ex:expitem-sgpl} fell below the threshold of 0.25 percentage points. We also excluded trials in which the participants missed the response deadline or gave overly fast responses (below 200 ms). As a result, we excluded 10.22\% of the trials from our experiment and 2.38\% of the \citeauthor{LagoEtAl:2019}'s (\citeyear{LagoEtAl:2019}) trials. 
 
@@ -223,7 +217,8 @@ All factors were sum-coded. We have used standard priors provided by the brms pa
 
 Because the magnitude of the agreement attraction effect can be operationalized either as the interaction between grammaticality and the presence of a plural attractor, or as the effect of a plural attractor in ungrammatical sentences, we used a second model with predictors (ii) and (iii) and their interaction to analyze responses to ungrammatical conditions only.
 
-In the results section, we provide summaries of the coefficient posterior distributions. For our model, we ran \Sexpr{n_chains} chains with \Sexpr{n_warmup} warm-up iterations and \Sexpr{n_iter-n_warmup} sampling iterations. The data for our study, along with our analysis scripts can be found \url{https://osf.io/hegmd/}.
+
+In the results section, we provide summaries of the coefficient posterior distributions. For our model, we ran \Sexpr{n_chains} chains with \Sexpr{n_warmup} warm-up iterations and \Sexpr{n_iter-n_warmup} sampling iterations. The data for our study, along with our analysis scripts can be found \url{hhttps://anonymous.4open.science/r/tr_short_agreement_attraction-1365/}.
 
 
 \subsection{Results}
@@ -303,12 +298,13 @@ Taken together, our results suggest (i) that agreement attraction effects in Tur
 \section*{Abbreviations} %exclude
 
 
-\textsc{dat} = dative, \textsc{gen} = genitive, \textsc{nmlz} = nominalizer, \textsc{pass} = passive, \textsc{pl} = plural, \textsc{poss} = possessive, \textsc{pst} = past, \textsc{sg} = singular, \textsc{when} = when. %exclude
+\textsc{dat} = dative, \textsc{gen} = genitive, \textsc{pass} = passive, \textsc{pl} = plural, \textsc{poss} = possessive, \textsc{pst} = past, \textsc{sg} = singular, \textsc{when} = when. %exclude
 
 
 \section*{Data Availability} %exclude
 
-All data and R code used in the data analysis is available at \url{https://osf.io/hegmd/}. %exclude
+
+The data that support the findings of this study, the code, and the paper resources including \LaTeX{} and \texttt{Sweave} files are openly available in the anonimized github page at \url{https://anonymous.4open.science/r/tr_short_agreement_attraction-1365/}. %exclude
 
 
 \section*{Authors' Contributions} %exclude

@@ -7,7 +7,7 @@ contrast_names <- c("cGrammatical" = "Grammaticality",
                     "cEndsInConsonant:cGrammatical:cAttractorPlural" = "Ambiguity * Grammaticality * Plural Attractor")
 
 p_m_response <- 
-  create_model_coefs_plot( m_responses_full, 
+  create_model_coefs_plot( m_responses, 
         plot_stats = T, map_names = contrast_names,
         expand_right = 2.5, expand_top = 1.4, x_stat_adjust = 1.1,
         x_breaks = -1:4 ) + 
@@ -16,6 +16,27 @@ p_m_response <-
 p_m_response <- p_m_response + theme(axis.title.x = element_text(hjust=0.15))
 
 p_m_response <- print(p_m_response + annotate(x=-1, xend=4, y=0, yend=0, lwd=0.25, geom="segment"))
+
+
+{
+  ungram_contrast_names <- c("cEndsInConsonant" = "Ambiguity",
+                             "cAttractorPlural" = "Plural Attactor",
+                             "cEndsInConsonant:cAttractorPlural" = "Ambiguity * Plural Attractor")
+  
+  p_m_ungram_response <- 
+    create_model_coefs_plot( m_ungram_responses, 
+                             plot_stats = T, map_names = ungram_contrast_names,
+                             expand_right = 2, expand_top = 5, x_stat_adjust = 1.1,
+                             x_breaks = c(-1,-0.5,0,0.5,1) ) + 
+    xlab("Estimate (probit)")
+  
+  p_m_ungram_response <- p_m_ungram_response + theme(axis.title.x = element_text(hjust=0.25))
+  
+  p_m_ungram_response <- print(p_m_ungram_response + annotate(x=-1, xend=1, y=0, yend=0, lwd=0.25, geom="segment"))
+  
+}
+
+
 
 {
   if (exp1only ==T) {
@@ -79,22 +100,3 @@ p_m_response <- print(p_m_response + annotate(x=-1, xend=4, y=0, yend=0, lwd=0.2
     # TODO: fill this up.
   }
 }
-
-{
-  ungram_contrast_names <- c("cEndsInConsonant" = "Ambiguity",
-                             "cAttractorPlural" = "Plural Attactor",
-                             "cEndsInConsonant:cAttractorPlural" = "Ambiguity * Plural Attractor")
-  
-  p_m_ungram_response <- 
-    create_model_coefs_plot( m_ungram_responses, 
-                             plot_stats = T, map_names = ungram_contrast_names,
-                             expand_right = 2, expand_top = 5, x_stat_adjust = 1.1,
-                             x_breaks = c(-1,-0.5,0,0.5,1) ) + 
-    xlab("Estimate (probit)")
-  
-  p_m_ungram_response <- p_m_ungram_response + theme(axis.title.x = element_text(hjust=0.25))
-  
-  p_m_ungram_response <- print(p_m_ungram_response + annotate(x=-1, xend=1, y=0, yend=0, lwd=0.25, geom="segment"))
-  
-}
-
