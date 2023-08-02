@@ -1,28 +1,47 @@
 # Data, code, and paper for "Agreement Attraction in Turkish: The Case of Genitive Attractors"
 
+## Folder Structure
+.
+├── LICENSE
+├── README.md
+├── code
+│   ├── analysis
+│   ├── fits
+│   ├── models
+│   └── scripts
+├── data
+│   ├── all_ud_tr.conllu
+│   ├── exp_data.rds
+│   ├── exp_form.rds
+│   └── frequencies_exp1_and_lago.xlsx
+├── dataraw
+│   ├── experiment
+│   └── lagoetal
+├── full_analysis.R
+└── pdf_render.R
+
 ## Run Order and Details
 
-- First open [full_analysis.R](full_analysis.R) file and run everything inside. It may take some time due to 2 Bayesian GLM Models. 
-- Then, run [pdf_render.R](pdf_render.R). It converts the Sweave file into a knitr file and then render a pdf out of knitr file.
-- Stand-alone scripts and data analysis can be found in R directory.
-  - The ordering between them as follows: [packages](R/scripts/00.0-packages.R), [read_ibex](R/scripts/00.1-prepare.R), [eda](R/scripts/00.2-eda.R), [misc_scripts](R/scripts/misc.R), [data_wrangling](R/analysis/01_data_wrangling.R), [word_frequencies](R/analysis/02_word_freq.R), [descriptive_plots](R/analysis/03_descriptive_plots.R), [bayesian_models](R/analysis/04_bayesian_models.R), [model_plots](R/analysis/05_model_plots.R), [text_inputs](R/analysis/06_text_inputs.R)
-- Stan models exported from the brms package can be found in [R/stan/](R/stan/) folder.
+- To run all code, open [full_analysis.R](full_analysis.R) file and run everything inside. It may take some time due to 2 Bayesian GLM Models.
+- Stand-alone scripts and data analysis can be found in R directory. Follow the order of the scripts to replicate our analysis.
+  1. [packages](code/scripts/00.0-packages.R)
+  2. [read_ibex](code/scripts/00.1-prepare.R)
+  3. [eda](code/scripts/00.2-eda.R)
+  4. [misc_scripts](code/scripts/misc.R)
+  5. [data_wrangling](code/analysis/01_data_wrangling.R)
+  6. [word_frequencies](code/analysis/02_word_freq.R)
+  7. [descriptive_plots](code/analysis/03_descriptive_plots.R)
+  8. [bayesian_models](code/analysis/04_bayesian_models.R)
+  9. [model_plots](code/analysis/05_model_plots.R)
+  10. [text_inputs](code/analysis/06_text_inputs.R)
+- Stan models exported from the brms package can be found in [code/stan/](code/stan/) folder.
 - Raw data from both Lago et al. (2019) and our experiment can be found in [dataraw/](dataraw/).
-- Complete environment needed for the paper, experimental data, and the demographic information of the experiment can be found in [data/](data/)
-- The edited glossa journal template and our sweave/knitr files can be found in [paper/glossa/](paper/glossa/).
-- Edits should be done in [manuscript.Rnw](paper/glossa/manuscript.Rnw) file.
-- Our [PDF](paper/glossa/manuscript-knitr.pdf) is also present in [paper/glossa/](paper/glossa/)
-- We use [Glossalatex](https://github.com/guidovw/Glossalatex) resources with small changes which is introduced due to [Glossa-Psycholinguistics guidelines](https://escholarship.org/uc/glossapsycholinguistics/structure_of_submission)
-- For automated word count, we use [this solution](https://tex.stackexchange.com/a/239703) by [Omar Wasow](https://tex.stackexchange.com/users/34597/omar-wasow) using Texcount Perl script. In addition to this solution, we excluded unnumbered parts automatically.
 
 ## Requirements
 
 List of packages, softwares, fonts you need for replicating our paper and models:
 * LaTeX
-* Brill Fonts
-* Fira Sans Fonts
 * R
-* Rstudio (needed for setwd to an active document)
 * Stan
 * and following R packages
   * languageR

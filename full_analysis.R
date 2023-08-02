@@ -16,16 +16,20 @@ setwd(here::here())
 # additional lago only bayesian model and coes
 # model of the RTs
 
-exp1only = F; lagoonly = F; rt = F
+exp1only <- F
+lagoonly <- F
+rt <- F
 
-files = c("./R/scripts/00.0-packages.R",
-            "./R/scripts/00.1-prepare.R",
-            "./R/scripts/00.2-eda.R",
-            "./R/scripts/misc.R", 
-            "./R/analysis/01_data_wrangling.R", "./R/analysis/02_word_freq.R", 
-            "./R/analysis/03_descriptive_plots.R","./R/analysis/04_bayesian_models.R",
-            "./R/analysis/05_model_plots.R", "./R/analysis/06_text_inputs.R", 
-            "./R/analysis/poss_vs_acc.R")
+files <- c(
+  "./code/scripts/00.0-packages.R",
+  "./code/scripts/00.1-prepare.R",
+  "./code/scripts/00.2-eda.R",
+  "./code/scripts/misc.R",
+  "./code/analysis/01_data_wrangling.R", "./code/analysis/02_word_freq.R",
+  "./code/analysis/03_descriptive_plots.R", "./code/analysis/04_bayesian_models.R",
+  "./code/analysis/05_model_plots.R", "./code/analysis/06_text_inputs.R",
+  "./code/analysis/poss_vs_acc.R"
+)
 
 ## source them all
 for (f in files) {
@@ -33,5 +37,5 @@ for (f in files) {
 }
 
 ## save the image
-save.image(file='./data/complete_environment.RData')
-#load(file='./data/complete_environment.RData')
+save.image(file = "./data/complete_environment.RData")
+# load(file='./data/complete_environment.RData')
