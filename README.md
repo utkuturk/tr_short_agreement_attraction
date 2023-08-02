@@ -19,8 +19,7 @@
 ├── dataraw
 │   ├── experiment
 │   └── lagoetal
-├── full_analysis.R
-└── pdf_render.R
+└── full_analysis.R
 ```
 
 ## Run Order and Details

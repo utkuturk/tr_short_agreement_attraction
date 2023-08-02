@@ -10,7 +10,7 @@ data <- read.csv(
   fill = TRUE
 )
 
-colnames(data) <- c("Timestamp", "MD5", "ControllerType", "SentenceNoInStimFile", 
+colnames(data) <- c("Timestamp", "MD5", "ControllerType", "SentenceNoInStimFile",
                     "Element", "Type", "Item", "Sentence", "Question","Answer", "RT")
 data %<>% dplyr::select(-MD5)
 
@@ -48,12 +48,12 @@ stopifnot( nrow(data) %% 2 == 0 )
 rows_stim <- data[c(T,F),]
 rows_resp <- data[c(F,T),]
 
-data <- rows_resp %>% left_join(timeform_subject, by = "Timestamp") %>% 
+data <- rows_resp %>% left_join(timeform_subject, by = "Timestamp") %>%
           dplyr::select(-Timestamp, -ControllerType, -Sentence, -Element) %>%
           dplyr::rename(ResponseCorrect=Answer, Response=Question) %>%
           dplyr::select(-ResponseCorrect)
 data %<>% group_by(subject) %>% mutate(trial_no = seq(subject))
-data %<>% within({ 
+data %<>% within({
   late_response = (Response == "NULL")
   Response[late_response] = NA
 })
@@ -62,10 +62,10 @@ responses <- c(yes="İYİ (P'ye basınız)", no="KÖTÜ (Q'ya basınız)")
 data$Response %<>% as.character() %>% enc2native()
 stopifnot( all(data$Response %in% responses | is.na(data$Response) ) )
 
-data$ResponseYes <- ifelse(grepl("P",data$Response) , T, 
+data$ResponseYes <- ifelse(grepl("P",data$Response) , T,
                            ifelse(grepl("Q",data$Response) , F, NA))
 
-data$condition <- 
+data$condition <-
   with(data, case_when(Type == "filler" & SentenceNoInStimFile >= 200 ~ "a",
                        Type == "filler" & SentenceNoInStimFile < 200 ~ "b",
                        Type == "condition_a" ~ "a",
