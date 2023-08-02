@@ -1,42 +1,27 @@
 # Data, code, and paper for "Agreement Attraction in Turkish: The Case of Genitive Attractors"
 
 ## Folder Structure
+
+```
 .
-
 ├── LICENSE
-
 ├── README.md
-
 ├── code
-
 │   ├── analysis
-
 │   ├── fits
-
 │   ├── models
-
 │   └── scripts
-
 ├── data
-
 │   ├── all_ud_tr.conllu
-
 │   ├── exp_data.rds
-
 │   ├── exp_form.rds
-
 │   └── frequencies_exp1_and_lago.xlsx
-
 ├── dataraw
-
 │   ├── experiment
-
 │   └── lagoetal
-
 ├── full_analysis.R
-
 └── pdf_render.R
-
+```
 
 ## Run Order and Details
 
